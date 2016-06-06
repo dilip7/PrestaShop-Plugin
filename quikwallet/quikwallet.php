@@ -129,7 +129,7 @@ class Quikwallet extends PaymentModule
     public function execPayment($cart)
     {
 
-        Logger::addLog("QW execPayment reached inside for Order# ".$cart->id);
+        //Logger::addLog("QW execPayment reached inside for Order# ".$cart->id);
 
         $invoice = new Address((int) $cart->id_address_invoice);
         $customer = new Customer((int) $cart->id_customer);
@@ -174,7 +174,7 @@ class Quikwallet extends PaymentModule
           } else {
             $quikwallet_args_array[] = "<input type='hidden' name='$key' value='$value'/>";
           }
-        }   
+        }
 
         $returnUrl = __PS_BASE_URI__."?fc=module&module=quikwallet&controller=validation";
 

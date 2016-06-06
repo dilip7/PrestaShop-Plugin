@@ -6,7 +6,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
     {
         global $smarty;
 
-        Logger::addLog("QW QuikwalletValidationModuleFrontController reached ");
+        //Logger::addLog("QW QuikwalletValidationModuleFrontController reached ");
 
         //if form is submit through quikwallet form on front end
         if (isset($_POST["quikwalletsubmit"])) {
@@ -40,7 +40,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
             $orderid = $_POST["order_id"];
             $date_c  = date('Y-m-d H:i');
 
-            Logger::addLog("QW QuikwalletValidationModuleFrontController amount from POST call is  ".$amount);
+            //Logger::addLog("QW QuikwalletValidationModuleFrontController amount from POST call is  ".$amount);
 
 
             $partnerurl = $smarty->tpl_vars['base_dir_ssl']->value."?fc=module&module=quikwallet&controller=validation";
@@ -51,7 +51,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
              *
              */
 
-            $escape_email =  Db::getInstance()->escape($email) ;//$this->db->escape($email); 
+            $escape_email =  Db::getInstance()->escape($email) ;//$this->db->escape($email);
             $escape_date = Db::getInstance()->escape($date_c);//$this->db->escape($date_c);
             $escape_address = Db::getInstance()->escape($address);//$this->db->escape($address);
 
@@ -215,7 +215,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
 
             $result =  Db::getInstance()->getRow($sql);
 
-            Logger::addLog(" select query result was ".$result["order_no"]." and q_id was ".$result["q_id"]);
+            //Logger::addLog(" select query result was ".$result["order_no"]." and q_id was ".$result["q_id"]);
 
             $order_id = $result["order_no"];
 
@@ -227,12 +227,12 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
 
             //$order_info = $this->model_checkout_order->getOrder($order_id);
 
-            Logger::addLog("text was ".$text. " and secret was ".$secret);
+            //Logger::addLog("text was ".$text. " and secret was ".$secret);
 
-            Logger::addLog("QW hashmac checking hashmac " .$hmac. "   and checksum was ".$checksum);
+            //Logger::addLog("QW hashmac checking hashmac " .$hmac. "   and checksum was ".$checksum);
 
             $cart_id  = $order_id;
-            $cart = new Cart($cart_id);  
+            $cart = new Cart($cart_id);
             $customer = new Customer($cart->id_customer);
             $quikwallet = new QuikWallet();
             $total = (float) $cart->getOrderTotal(true, Cart::BOTH);
@@ -250,13 +250,13 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
 
                 Db::getInstance()->execute($sql);
 
-                Logger::addLog("QW hashmac matched DONE!!!");
+                //Logger::addLog("QW hashmac matched DONE!!!");
 
                 if ($order_id != '') {
 
                     try{
 
-                        $history_message = "Payment Successful for Order#".$cart_id.". QuikWallet payment id:".$id ;     
+                        $history_message = "Payment Successful for Order#".$cart_id.". QuikWallet payment id:".$id ;
 
                         // success
                         $quikwallet->validateOrder($cart_id, 2, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
@@ -277,7 +277,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
 
                     }catch(Exception $e){
 
-                        $history_message = "Transaction ERROR for Order#".$cart_id.". QuikWallet payment id:".$id ;     
+                        $history_message = "Transaction ERROR for Order#".$cart_id.". QuikWallet payment id:".$id ;
 
                         // error payment
                         $quikwallet->validateOrder($cart_id, 8, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
@@ -285,7 +285,6 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
                         Logger::addLog($history_message, 1);
 
                         $status_code = "Failed";
-                        Logger::addLog($history_message, 1);
 
                         $this->context->smarty->assign(array(
                             'status' => $status_code,
@@ -300,13 +299,13 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
 
                     }
 
-                } 
+                }
 
             }
-            else 
+            else
             {
 
-                $history_message = " SECURITY ERROR ..! Hash mismatch for Order#".$cart_id.". QuikWallet payment id:".$id ;     
+                $history_message = " SECURITY ERROR ..! Hash mismatch for Order#".$cart_id.". QuikWallet payment id:".$id ;
 
                 // error payment
                 $quikwallet->validateOrder($cart_id, 8, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
@@ -325,12 +324,6 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
                 $cart->delete();
                 $this->setTemplate('payment_response.tpl');
 
-                /*
-                Logger::addLog("Payment Failed for Order# ".$cart_id.". QuikWallet payment id:".$id, 4);
-                echo 'Error! Please contact the seller directly for assistance.</br>';
-                echo 'Order Id: '.$cart_id.'</br>';
-                echo 'QuikWallet Payment Id: '.$id.'</br>';
-                 */
 
 
             }

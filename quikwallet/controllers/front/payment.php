@@ -8,7 +8,7 @@ class QuikwalletPaymentModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
 
-        Logger::addLog("QW QuikwalletPaymentModuleFrontController reached ");
+        //Logger::addLog("QW QuikwalletPaymentModuleFrontController reached ");
 
 
         $cart = $this->context->cart;
