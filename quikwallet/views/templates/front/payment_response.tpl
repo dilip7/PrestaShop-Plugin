@@ -8,7 +8,7 @@
 {else}
 	<p class="error">
 		{$responseMsg}
-		<br /><br /><a href="{$base_dir}contact-form.php">{l s='customer support' mod='quikwallet'}</a>.
-		<br /><br />If you would like to view your order history please <a href="order-history" title="{l s='History of Orders' mod='quikwallet'}">Click Here!</a>
+		<br /><br /><a href="{$base_dir}contact-form.php" style="color: blue;" >{l s='Contact customer support' mod='quikwallet'}</a>.
+		<br /><br />If you would like to view your order history please <a href="order-history" style="color: blue;" title="{l s='History of Orders' mod='quikwallet'}">Click Here!</a>
 	<p></p>
 {/if}
