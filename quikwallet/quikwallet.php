@@ -21,8 +21,7 @@ class Quikwallet extends PaymentModule
         $config = Configuration::getMultiple(array(
           'QUIKWALLET_PARTNER_ID',
           'QUIKWALLET_SECRET',
-          'QUIKWALLET_URL',
-          'QUIKWALLET_THEME_COLOR'
+          'QUIKWALLET_URL'
         ));
 
         if (array_key_exists('QUIKWALLET_PARTNER_ID', $config))
@@ -38,11 +37,6 @@ class Quikwallet extends PaymentModule
         if (array_key_exists('QUIKWALLET_URL', $config))
         {
             $this->KEY_URL = $config['QUIKWALLET_URL'];
-        }
-
-        if(array_key_exists('QUIKWALLET_THEME_COLOR', $config))
-        {
-            $this->THEME_COLOR = $config['QUIKWALLET_THEME_COLOR'];
         }
 
         parent::__construct();
@@ -180,15 +174,7 @@ class Quikwallet extends PaymentModule
           } else {
             $quikwallet_args_array[] = "<input type='hidden' name='$key' value='$value'/>";
           }
-        }    
-
-        /* this theme is not needed as we dont do any thing related to this
-        if($this->THEME_COLOR)
-        {
-            $quikwallet_args_array['theme']['color'] = $this->THEME_COLOR;
-        }
-        */
-        
+        }   
 
         $returnUrl = __PS_BASE_URI__."?fc=module&module=quikwallet&controller=validation";
 
@@ -263,7 +249,6 @@ class Quikwallet extends PaymentModule
             Configuration::updateValue('QUIKWALLET_PARTNER_ID', Tools::getValue('KEY_ID'));
             Configuration::updateValue('QUIKWALLET_SECRET', Tools::getValue('KEY_SECRET'));
             Configuration::updateValue('QUIKWALLET_URL', Tools::getValue('KEY_URL'));
-            Configuration::updateValue('QUIKWALLET_THEME_COLOR', Tools::getValue('THEME_COLOR'));
 
             $this->KEY_ID= Tools::getValue('KEY_ID');
             $this->KEY_SECRET= Tools::getValue('KEY_SECRET');
@@ -304,15 +289,13 @@ class Quikwallet extends PaymentModule
         $modquikwallet                = $this->l('Quikwallet Setup');
         $modquikwalletDesc        = $this->l('Please specify the Quikwallet Key Id and Key Secret and Key Url.');
 
-        $modClientLabelKeyId      = $this->l('Quikwallet Key Id');
-        $modClientLabelKeySecret       = $this->l('Quikwallet Key Secret');
-        $modClientLabelKeyUrl       = $this->l('Quikwallet Key Url');
-        $modClientLabelThemeColor       = $this->l('Theme Color');
+        $modClientLabelKeyId      = $this->l('Partner Id');
+        $modClientLabelKeySecret       = $this->l('Partner Secret');
+        $modClientLabelKeyUrl       = $this->l('Environment URL');
 
         $modClientValueKeyId      = $this->KEY_ID;
         $modClientValueKeySecret       = $this->KEY_SECRET;
         $modClientValueKeyUrl       = $this->KEY_URL;
-        $modClientValueThemeColor       = $this->THEME_COLOR;
 
         $modUpdateSettings      = $this->l('Update settings');
         $this->_html .=
@@ -344,12 +327,6 @@ class Quikwallet extends PaymentModule
                                         <td width='130'>{$modClientLabelKeyUrl}</td>
                                         <td>
                                                 <input type='text' name='KEY_URL' value='{$modClientValueKeyUrl}' style='width: 300px;' />
-                                        </td>
-                                </tr>
-                                <tr>
-                                        <td width='130'>{$modClientLabelThemeColor}</td>
-                                        <td>
-                                                <input type='color' name='THEME_COLOR' value='{$modClientValueThemeColor}' style='width: 300px;' />
                                         </td>
                                 </tr>
                                 <tr>
