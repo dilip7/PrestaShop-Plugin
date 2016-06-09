@@ -256,24 +256,50 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
 
                     try{
 
-                        $history_message = "Payment Successful for Order#".$cart_id.". QuikWallet payment id:".$id ;
+                        $status = strtolower($status);
 
-                        // success
-                        $quikwallet->validateOrder($cart_id, 2, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
+                        if($status == "paid"){
 
-                        Logger::addLog($history_message, 1);
+                            $history_message = "Payment Successful for Order# ".$cart_id.". QuikWallet payment id:".$id ;
 
-                        $query = http_build_query(array(
-                            'controller'    =>  'order-confirmation',
-                            'id_cart'       =>  (int) $cart->id,
-                            'id_module'     =>  (int) $this->module->id,
-                            'id_order'      =>  $quikwallet->currentOrder
-                        ), '', '&');
+                            // success
+                            $quikwallet->validateOrder($cart_id, 2, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
 
-                        $url = 'index.php?' . $query;
+                            Logger::addLog($history_message, 1);
 
-                        Tools::redirect($url);
+                            $query = http_build_query(array(
+                                'controller'    =>  'order-confirmation',
+                                'id_cart'       =>  (int) $cart->id,
+                                'id_module'     =>  (int) $this->module->id,
+                                'id_order'      =>  $quikwallet->currentOrder
+                            ), '', '&');
 
+                            $url = 'index.php?' . $query;
+
+                            Tools::redirect($url);
+
+                        }else{
+
+                            $history_message = "Transaction ERROR for Order# ".$cart_id.". QuikWallet payment id: ".$id ;
+
+                            // error payment
+                            $quikwallet->validateOrder($cart_id, 8, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
+
+                            Logger::addLog($history_message, 1);
+
+                            $status_code = "Failed";
+
+                            $this->context->smarty->assign(array(
+                                'status' => $status_code,
+                                'responseMsg' => $history_message,
+                                'this_path' => $this->module->getPathUri(),
+                                'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/'
+                            ));
+
+                            $cart->delete();
+                            $this->setTemplate('payment_response.tpl');
+
+                        }
 
                     }catch(Exception $e){
 
@@ -305,7 +331,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
             else
             {
 
-                $history_message = "Your Order". $cart_id. " was not completed due to SECURITY Error!, please refer Quikwallet Payment reference ID". $id;
+                $history_message = " SECURITY ERROR ..! Hash mismatch for Order#".$cart_id.". QuikWallet payment id:".$id ;
 
                 // error payment
                 $quikwallet->validateOrder($cart_id, 8, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
