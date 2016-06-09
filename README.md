@@ -4,7 +4,7 @@ QuikWallet is a payment gateway providing Visa, Master Card, American Express an
 
 ### Installation
 
-1. Copy all files/folders recursively to to the modules directory where your PrestaShop install is located on your hosting/server.
+1. Copy all files/folders recursively to the  modules directory where your PrestaShop install is located on your hosting/server.
 3. Go into your PrestaShop Admin Modules/Payment Gateways area, install, enable and select QuikWa Payments (Search for QuikWallet if you can not see it).
 4. Click configuration and add your Partner ID, Partner Secret and QuikWallet Server URL shared with you from QuikWallet.
 5. Click Update Settings.

@@ -23,7 +23,7 @@
       <tr>
          <td colspan="2" align="center" height="26">
 
-            <input type="submit" name="quikwalletsubmit" id="quikwalletsubmit" value="Pay via QuikWallet" class="free_input" > <?php echo $cancel_url; ?>
+            <input type="submit" name="quikwalletsubmit" style="visibility:hidden;" id="quikwalletsubmit" value="Pay via QuikWallet" class="free_input" > <?php echo $cancel_url; ?>
             {literal}
             <script type="text/javascript">
               function validateEmail(email) {
