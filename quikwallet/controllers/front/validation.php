@@ -305,7 +305,7 @@ class QuikwalletValidationModuleFrontController extends ModuleFrontController
             else
             {
 
-                $history_message = " SECURITY ERROR ..! Hash mismatch for Order#".$cart_id.". QuikWallet payment id:".$id ;
+                $history_message = "Your Order". $cart_id. " was not completed due to SECURITY Error!, please refer Quikwallet Payment reference ID". $id;
 
                 // error payment
                 $quikwallet->validateOrder($cart_id, 8, $total, $quikwallet->displayName, $history_message, array(), NULL, false, $customer->secure_key);
